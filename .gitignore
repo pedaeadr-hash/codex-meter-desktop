@@ -1,0 +1,11 @@
+bin/
+obj/
+artifacts/
+.vs/
+.idea/
+*.user
+*.suo
+*.nupkg
+graphify-out/
+.taste-skill/
+

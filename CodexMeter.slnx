@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CodexMeter.Cli/CodexMeter.Cli.csproj" />
+    <Project Path="src/CodexMeter.Core/CodexMeter.Core.csproj" />
+    <Project Path="src/CodexMeter.Desktop/CodexMeter.Desktop.csproj" />
+    <Project Path="src/CodexMeter.Infrastructure/CodexMeter.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CodexMeter.SmokeTests/CodexMeter.SmokeTests.csproj" />
+  </Folder>
+</Solution>
