@@ -40,7 +40,7 @@ public sealed class CodexAppServerClient : IUsageProvider, IDisposable, IAsyncDi
                 return;
             }
 
-            var binary = Environment.GetEnvironmentVariable("CODEX_BINARY") ?? "codex.exe";
+            var binary = CodexBinaryLocator.Resolve();
             var startInfo = new ProcessStartInfo(binary, "app-server")
             {
                 UseShellExecute = false,
@@ -74,7 +74,7 @@ public sealed class CodexAppServerClient : IUsageProvider, IDisposable, IAsyncDi
                     {
                         name = "codex_meter_desktop",
                         title = "Codex Meter Desktop",
-                        version = "1.0.0"
+                        version = "1.0.1"
                     }
                 },
                 cancellationToken);

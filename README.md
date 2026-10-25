@@ -18,8 +18,7 @@ Widget compacto para Windows que mostra os limites de uso da conta Codex autenti
 
 - Windows 10 ou 11.
 - .NET SDK 10.
-- Codex CLI instalado e autenticado.
-- O comando `codex --version` deve funcionar no terminal.
+- Codex Desktop ou Codex CLI instalado e autenticado.
 
 O instalador publicado e autocontido e nao exige a instalacao manual do .NET.
 
@@ -35,6 +34,9 @@ O aplicativo inicia `codex app-server` de forma oculta e consulta:
 - `account/usage/read`
 
 Nenhuma senha, token OAuth ou chave da conta e copiada para o aplicativo.
+
+No Windows, o executavel e descoberto automaticamente tanto pelo `PATH` quanto pela pasta interna
+versionada do Codex Desktop em `%LOCALAPPDATA%\OpenAI\Codex\bin`.
 
 ## Comandos no CMD
 
@@ -109,4 +111,7 @@ dotnet run --project tests/CodexMeter.SmokeTests
 ## Licenca
 
 MIT. Consulte [LICENSE](LICENSE).
+
+O simbolo OpenAI exibido no widget pertence a OpenAI e e usado apenas para indicar a integracao
+direta com o Codex. O projeto permanece independente e sem afiliacao oficial.
 

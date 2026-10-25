@@ -1,5 +1,6 @@
 using System.Text.Json;
 using CodexMeter.Core;
+using CodexMeter.Infrastructure;
 
 var zone = TimeZoneInfo.CreateCustomTimeZone("UTC-3", TimeSpan.FromHours(-3), "UTC-3", "UTC-3");
 var now = DateTimeOffset.Parse("2026-10-24T18:00:00Z");
@@ -50,6 +51,18 @@ var clamped = UsageNormalizer.Normalize(clampedLimits.RootElement, emptyUsage.Ro
 
 Assert(clamped.Primary?.UsedPercent == 100, "limite superior de percentual");
 Assert(clamped.Secondary?.UsedPercent == 0, "limite inferior de percentual");
+
+var knownBinary = Path.GetTempFileName();
+try
+{
+    var resolvedBinary = CodexBinaryLocator.FindFirstExisting(
+        [Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"), "codex.exe"), knownBinary]);
+    Assert(resolvedBinary == Path.GetFullPath(knownBinary), "descoberta do executavel Codex");
+}
+finally
+{
+    File.Delete(knownBinary);
+}
 
 Console.WriteLine("Smoke tests: OK");
 return;

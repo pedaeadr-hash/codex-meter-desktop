@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\CodexMeter.Core\CodexMeter.Core.csproj" />
+    <ProjectReference Include="..\..\src\CodexMeter.Infrastructure\CodexMeter.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

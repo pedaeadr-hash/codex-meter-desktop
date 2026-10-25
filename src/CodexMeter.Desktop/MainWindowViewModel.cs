@@ -96,8 +96,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged, IDisposable
             PrimaryRemainingText = "--%";
             PrimaryCaption = "CODEX INDISPONIVEL";
             PlanText = "Codex Meter";
-            WeeklyText = "Abra o Codex e tente novamente";
-            ResetText = "Clique no controle para atualizar";
+            WeeklyText = "Nao foi possivel consultar os dados";
+            ResetText = "Clique no controle para tentar de novo";
             WeeklyUsedPercent = 0;
         }
         finally
@@ -106,18 +106,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged, IDisposable
         }
     }
 
-    private static string FormatReset(DateTimeOffset resetAt)
-    {
-        var remaining = resetAt - DateTimeOffset.UtcNow;
-        if (remaining <= TimeSpan.Zero)
-        {
-            return "Renovando agora";
-        }
-
-        return remaining.TotalHours >= 1
-            ? $"Renova em {(int)remaining.TotalHours}h {remaining.Minutes}min"
-            : $"Renova em {Math.Max(1, remaining.Minutes)}min";
-    }
+    private static string FormatReset(DateTimeOffset resetAt) =>
+        $"5 h · volta às {resetAt.ToLocalTime():HH:mm}";
 
     private static string FormatTokens(long tokens) => tokens switch
     {

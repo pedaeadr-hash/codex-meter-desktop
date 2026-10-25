@@ -1,5 +1,5 @@
 #define MyAppName "Codex Meter"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "pedaeadr-hash"
 #define MyAppExeName "CodexMeter.exe"
 
@@ -37,6 +37,7 @@ Name: "{userdesktop}\Codex Meter"; Filename: "{app}\{#MyAppExeName}"; Tasks: sta
 
 [Registry]
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "CodexMeter"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: startup; Flags: uninsdeletevalue
+Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}"; Check: NeedsAddPath(ExpandConstant('{app}')); Flags: preservestringtype
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "Abrir o Codex Meter"; Flags: nowait postinstall skipifsilent
@@ -45,6 +46,15 @@ Filename: "{app}\{#MyAppExeName}"; Description: "Abrir o Codex Meter"; Flags: no
 function PathContains(const Haystack, Needle: string): Boolean;
 begin
   Result := Pos(';' + Lowercase(Needle) + ';', ';' + Lowercase(Haystack) + ';') > 0;
+end;
+
+function NeedsAddPath(const AppPath: string): Boolean;
+var
+  CurrentPath: string;
+begin
+  if not RegQueryStringValue(HKCU, 'Environment', 'Path', CurrentPath) then
+    CurrentPath := '';
+  Result := not PathContains(CurrentPath, AppPath);
 end;
 
 procedure AddAppToPath;
