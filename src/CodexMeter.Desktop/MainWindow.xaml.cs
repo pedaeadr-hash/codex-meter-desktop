@@ -113,7 +113,7 @@ public partial class MainWindow : Window
         CardHeader.Background = theme.Header;
         CardBorder.CornerRadius = settings.Corners(28);
         var poster = settings.Theme == "poster";
-        var apple = settings.Theme is "ember-dark" or "ember-light" or "bar" or "silver" or "contrast" or "split";
+        var apple = settings.Theme is "ember-dark" or "ember-light" or "bar";
         CardHeader.Visibility = poster || apple ? Visibility.Collapsed : Visibility.Visible;
         ClassicDetails.Visibility = poster || apple ? Visibility.Collapsed : Visibility.Visible;
         PosterLayout.Visibility = poster ? Visibility.Visible : Visibility.Collapsed;

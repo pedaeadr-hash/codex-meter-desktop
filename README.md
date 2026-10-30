@@ -53,7 +53,7 @@ codex-meter status
 
 `code-meter` também funciona como apelido, por exemplo `code-meter config`. Na janela de
 personalização, ajuste as dimensões e marque os cantos que devem continuar arredondados.
-Em **Visual do card**, escolha entre oito modelos, incluindo Chama claro/escuro e Barra.
+Em **Visual do card**, escolha entre Preto essencial, Pontilhado, Chama claro, Chama escuro e Barra.
 Em **Informações**, escolha se o limite semanal e a renovação aparecem; a renovação pode
 ser exibida como horário ou tempo restante.
 As alterações aparecem no card durante a edição; use **Salvar visual** para guardá-las ou

@@ -63,14 +63,5 @@ public sealed class AppleCard : FrameworkElement
             if (_settings.ShowReset) Label(dc,reset,w*.50,h-24,9,muted,w*.50-pad,false,TextAlignment.Right);
             return;
         }
-        var background = t == "silver" ? "#292B30" : t == "contrast" ? "#F2F1EB" : "#111215"; light = t == "contrast"; main=B(light ? "#151515" : "#F8F8F8"); muted=B(light ? "#60605C" : "#B7BAC2");
-        dc.DrawRectangle(B(background),null,new Rect(0,0,w,h));
-        if (t == "split") dc.DrawRoundedRectangle(B("#252932"),null,new Rect(w*.62,pad,w*.38-pad,h-pad*2),12,12);
-        if (t == "silver") dc.DrawRoundedRectangle(B("#3D4149"),null,new Rect(pad,pad,w-pad*2,29),9,9);
-        Label(dc,"CODEX METER",pad,pad+(t=="silver"?7:0),10,muted,w*.65,true);
-        Label(dc,pct,pad,h*.30,Math.Clamp(h*.23,24,42),main,t=="split"?w*.53:w-pad*2,true);
-        Label(dc,caption,pad,h*.30+Math.Clamp(h*.23,24,42)*1.3+2,9,muted,t=="split"?w*.53:w-pad*2);
-        if (t == "split") { if (_settings.ShowWeekly) Label(dc,week,w*.64,h*.35,10,main,w*.34-pad); if (_settings.ShowReset) Label(dc,reset,w*.64,h*.56,9,muted,w*.34-pad); }
-        else { if (_settings.ShowWeekly) Label(dc,week,pad,h-30,10,main,w*.48); if (_settings.ShowReset) Label(dc,reset,w*.50,h-30,9,muted,w*.50-pad,false,TextAlignment.Right); }
     }
 }

@@ -88,7 +88,7 @@
                     <StackPanel>
                         <TextBlock Text="Visual do card" Foreground="#F5F5F5" FontSize="17" FontWeight="SemiBold"/>
                         <TextBlock Text="Escolha o estilo que prefere." Foreground="#C7C7CD" FontSize="12" Margin="0,4,0,8"/>
-                        <ComboBox x:Name="ThemeCombo" SelectionChanged="Theme_OnChanged" Margin="0,0,0,20"><ComboBoxItem Content="Preto essencial" Tag="classic"/><ComboBoxItem Content="Pontilhado" Tag="poster"/><ComboBoxItem Content="Chama escuro" Tag="ember-dark"/><ComboBoxItem Content="Chama claro" Tag="ember-light"/><ComboBoxItem Content="Barra" Tag="bar"/><ComboBoxItem Content="Prata" Tag="silver"/><ComboBoxItem Content="Papel" Tag="contrast"/><ComboBoxItem Content="Dividido" Tag="split"/></ComboBox>
+                        <ComboBox x:Name="ThemeCombo" SelectionChanged="Theme_OnChanged" Margin="0,0,0,20"><ComboBoxItem Content="Preto essencial" Tag="classic"/><ComboBoxItem Content="Pontilhado" Tag="poster"/><ComboBoxItem Content="Chama escuro" Tag="ember-dark"/><ComboBoxItem Content="Chama claro" Tag="ember-light"/><ComboBoxItem Content="Barra" Tag="bar"/></ComboBox>
                         <TextBlock Text="Informações" Foreground="#F5F5F5" FontSize="17" FontWeight="SemiBold"/>
                         <TextBlock Text="Escolha o que aparece no card." Foreground="#C7C7CD" FontSize="12" Margin="0,4,0,6"/>
                         <CheckBox x:Name="ShowWeeklyCheck" Content="Mostrar limite semanal" Checked="Details_OnChanged" Unchecked="Details_OnChanged"/>
