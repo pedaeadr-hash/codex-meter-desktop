@@ -44,11 +44,26 @@ O instalador adiciona `codex-meter` ao `PATH` do usuario:
 
 ```bat
 codex-meter open
+codex-meter config
 codex-meter minimize
 codex-meter minimizer
 codex-meter off
 codex-meter status
 ```
+
+`code-meter` também funciona como apelido, por exemplo `code-meter config`. Na janela de
+personalização, ajuste as dimensões e marque os cantos que devem continuar arredondados.
+Em **Visual do card**, escolha entre oito modelos, incluindo Chama claro/escuro e Barra.
+Em **Informações**, escolha se o limite semanal e a renovação aparecem; a renovação pode
+ser exibida como horário ou tempo restante.
+As alterações aparecem no card durante a edição; use **Salvar visual** para guardá-las ou
+**Cancelar** para restaurar o visual anterior.
+Na seção **Borda**, ajuste a espessura de 0 a 8 px, escolha uma cor da lista ou informe um
+código hexadecimal como `#FF8844`. A opção **Cor do tema** usa a borda preta original.
+Em **Tamanho do card**, a largura pode variar de 220 a 400 px e a altura de 140 a 240 px.
+
+O card apresenta o percentual restante da janela de cinco horas, o limite semanal e o horário
+de renovação quando disponíveis.
 
 O nome `codex-meter` evita substituir o executavel oficial `codex`.
 

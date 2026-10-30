@@ -25,6 +25,13 @@ public sealed class AppController(IWindowController windowController) : Controll
         return Ok(new { status = "minimized" });
     }
 
+    [HttpPost("config")]
+    public IActionResult Config()
+    {
+        windowController.Config();
+        return Ok(new { status = "config_opened" });
+    }
+
     [HttpPost("off")]
     public IActionResult Close()
     {

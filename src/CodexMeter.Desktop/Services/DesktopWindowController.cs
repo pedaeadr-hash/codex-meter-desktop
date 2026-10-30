@@ -18,6 +18,8 @@ public sealed class DesktopWindowController(MainWindow window) : IWindowControll
 
     public void Minimize() => window.Dispatcher.BeginInvoke(window.Hide);
 
+    public void Config() => window.Dispatcher.BeginInvoke(window.ShowConfig);
+
     public void Close() => _ = Task.Run(async () =>
     {
         // Give the controller time to return its HTTP response before stopping Kestrel.

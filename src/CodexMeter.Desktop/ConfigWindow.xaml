@@ -1,0 +1,126 @@
+<Window x:Class="CodexMeter.Desktop.ConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Personalizar · Codex Meter" Width="850" Height="650" MinWidth="740" MinHeight="570"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True"
+        Background="Transparent" FontFamily="Segoe UI Variable Text, Segoe UI"
+        ShowInTaskbar="True" KeyDown="Window_OnKeyDown">
+    <Window.Resources>
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Foreground" Value="#F5F5F5"/><Setter Property="Background" Value="#4BFFFFFF"/>
+            <Setter Property="BorderThickness" Value="0"/><Setter Property="Padding" Value="19,11"/><Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
+                <Border x:Name="Surface" Background="{TemplateBinding Background}" CornerRadius="11" BorderBrush="#38FFFFFF" BorderThickness="1">
+                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Surface" Property="Opacity" Value="0.85"/></Trigger>
+                    <Trigger Property="IsPressed" Value="True"><Setter TargetName="Surface" Property="Opacity" Value="0.65"/></Trigger>
+                    <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Surface" Property="BorderBrush" Value="#F5F5FF"/></Trigger>
+                    <Trigger Property="IsEnabled" Value="False"><Setter TargetName="Surface" Property="Opacity" Value="0.4"/></Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate></Setter.Value></Setter>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#E5E5E7"/><Setter Property="FontSize" Value="12"/><Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="CheckBox">
+                <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Border x:Name="Box" Width="18" Height="18" Background="#29FFFFFF" BorderBrush="#78FFFFFF" BorderThickness="1" CornerRadius="5">
+                        <Path x:Name="Mark" Data="M 3 7 L 6 10 L 12 4" Stroke="#161618" StrokeThickness="1.8" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Visibility="Collapsed"/>
+                    </Border>
+                    <ContentPresenter Grid.Column="1" Margin="9,0,0,0" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                </Grid>
+                <ControlTemplate.Triggers><Trigger Property="IsChecked" Value="True"><Setter TargetName="Box" Property="Background" Value="#F1F1F2"/><Setter TargetName="Box" Property="BorderBrush" Value="#F1F1F2"/><Setter TargetName="Mark" Property="Visibility" Value="Visible"/></Trigger></ControlTemplate.Triggers>
+            </ControlTemplate></Setter.Value></Setter>
+        </Style>
+        <Style TargetType="Slider">
+            <Setter Property="Height" Value="22"/><Setter Property="Margin" Value="0,4,0,0"/><Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Slider">
+                <Grid VerticalAlignment="Center"><Border Height="5" Background="#45FFFFFF" CornerRadius="3"/>
+                    <Track x:Name="PART_Track">
+                        <Track.DecreaseRepeatButton><RepeatButton Command="Slider.DecreaseLarge" Focusable="False"><RepeatButton.Template><ControlTemplate TargetType="RepeatButton"><Border Height="5" Background="#CAD5F6" CornerRadius="3"/></ControlTemplate></RepeatButton.Template></RepeatButton></Track.DecreaseRepeatButton>
+                        <Track.Thumb><Thumb Width="18" Height="18"><Thumb.Template><ControlTemplate TargetType="Thumb"><Ellipse Fill="#FFFFFF" Stroke="#CCD1E0" StrokeThickness="1"><Ellipse.Effect><DropShadowEffect BlurRadius="5" ShadowDepth="1" Opacity="0.35"/></Ellipse.Effect></Ellipse></ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
+                        <Track.IncreaseRepeatButton><RepeatButton Command="Slider.IncreaseLarge" Opacity="0" Focusable="False"/></Track.IncreaseRepeatButton>
+                    </Track>
+                </Grid>
+            </ControlTemplate></Setter.Value></Setter>
+        </Style>
+        <Style TargetType="TextBox"><Setter Property="Background" Value="#202022"/><Setter Property="Foreground" Value="#F3F3F4"/><Setter Property="BorderBrush" Value="#49494D"/><Setter Property="CaretBrush" Value="White"/><Setter Property="Padding" Value="9,7"/></Style>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Width" Value="8"/><Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ScrollBar">
+                <Grid Background="Transparent"><Track x:Name="PART_Track" IsDirectionReversed="True" Orientation="Vertical">
+                    <Track.DecreaseRepeatButton><RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="False"/></Track.DecreaseRepeatButton>
+                    <Track.Thumb><Thumb><Thumb.Template><ControlTemplate TargetType="Thumb"><Border Background="#78FFFFFF" CornerRadius="4" Margin="2,0"/></ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
+                    <Track.IncreaseRepeatButton><RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="False"/></Track.IncreaseRepeatButton>
+                </Track></Grid>
+            </ControlTemplate></Setter.Value></Setter>
+        </Style>
+        <Style TargetType="ComboBoxItem"><Setter Property="Foreground" Value="#EEEEEF"/><Setter Property="Background" Value="#242427"/><Setter Property="Padding" Value="10,7"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ComboBoxItem"><Border x:Name="Item" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}"><ContentPresenter/></Border><ControlTemplate.Triggers><Trigger Property="IsHighlighted" Value="True"><Setter TargetName="Item" Property="Background" Value="#454549"/></Trigger><Trigger Property="IsSelected" Value="True"><Setter TargetName="Item" Property="Background" Value="#3C3C40"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Foreground" Value="#F1F1F2"/><Setter Property="Background" Value="#242427"/><Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ComboBox">
+                <Grid><ToggleButton x:Name="Toggle" Foreground="#F1F1F2" Focusable="False" IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" ClickMode="Press">
+                    <ToggleButton.Template><ControlTemplate TargetType="ToggleButton"><Border Background="#242427" BorderBrush="#49494D" BorderThickness="1" CornerRadius="8" Padding="11,8"><Grid><ContentPresenter Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource AncestorType=ComboBox}}"/><Path Data="M 0 0 L 4 4 L 8 0" Stroke="#BDBDC1" StrokeThickness="1.5" HorizontalAlignment="Right" VerticalAlignment="Center"/></Grid></Border></ControlTemplate></ToggleButton.Template>
+                </ToggleButton>
+                <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade"><Border Background="#242427" BorderBrush="#49494D" BorderThickness="1" CornerRadius="8" MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="240"><ScrollViewer><ItemsPresenter/></ScrollViewer></Border></Popup></Grid>
+            </ControlTemplate></Setter.Value></Setter>
+        </Style>
+    </Window.Resources>
+    <Border Background="#19191B" BorderBrush="#444448" BorderThickness="1" CornerRadius="20" Margin="8">
+        <Border.Effect><DropShadowEffect Color="Black" BlurRadius="32" Opacity="0.48" ShadowDepth="9"/></Border.Effect>
+        <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+            <Grid Margin="30,25,30,0" MouseLeftButtonDown="Header_OnMouseLeftButtonDown">
+                <StackPanel><TextBlock Text="Aparência" Foreground="#FFFFFF" FontSize="25" FontWeight="SemiBold"/><TextBlock Text="Ajuste o card ao seu espaço." Foreground="#E0E0E6" FontSize="12.5" Margin="0,4,0,0"/></StackPanel>
+                <Button Content="×" Click="Cancel_OnClick" Width="34" Height="34" Padding="0" FontSize="19" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ActionButton}" ToolTip="Fechar"/>
+            </Grid>
+            <Grid Grid.Row="1" Margin="30,25,30,18"><Grid.ColumnDefinitions><ColumnDefinition Width="1.05*"/><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                <Border Background="#101011" BorderBrush="#323236" BorderThickness="1" CornerRadius="16" Padding="22">
+                    <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <StackPanel><TextBlock Text="Prévia ao vivo" Foreground="#FFFFFF" FontSize="15" FontWeight="SemiBold"/><TextBlock Text="As alterações aparecem na hora" Foreground="#DFDFE5" FontSize="12" Margin="0,4,0,0"/></StackPanel>
+                        <Rectangle x:Name="LivePreview" Grid.Row="1" MaxWidth="290" Height="200" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                        <StackPanel Grid.Row="2"><TextBlock Text="CODEX METER" Foreground="#D5D5DF" FontSize="10" FontWeight="SemiBold"/><TextBlock Text="Um espaço só seu, sempre à vista." Foreground="#E4E4E9" FontSize="12" Margin="0,7,0,0"/></StackPanel>
+                    </Grid>
+                </Border>
+                <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,8,0">
+                    <StackPanel>
+                        <TextBlock Text="Visual do card" Foreground="#F5F5F5" FontSize="17" FontWeight="SemiBold"/>
+                        <TextBlock Text="Escolha o estilo que prefere." Foreground="#C7C7CD" FontSize="12" Margin="0,4,0,8"/>
+                        <ComboBox x:Name="ThemeCombo" SelectionChanged="Theme_OnChanged" Margin="0,0,0,20"><ComboBoxItem Content="Preto essencial" Tag="classic"/><ComboBoxItem Content="Pontilhado" Tag="poster"/><ComboBoxItem Content="Chama escuro" Tag="ember-dark"/><ComboBoxItem Content="Chama claro" Tag="ember-light"/><ComboBoxItem Content="Barra" Tag="bar"/><ComboBoxItem Content="Prata" Tag="silver"/><ComboBoxItem Content="Papel" Tag="contrast"/><ComboBoxItem Content="Dividido" Tag="split"/></ComboBox>
+                        <TextBlock Text="Informações" Foreground="#F5F5F5" FontSize="17" FontWeight="SemiBold"/>
+                        <TextBlock Text="Escolha o que aparece no card." Foreground="#C7C7CD" FontSize="12" Margin="0,4,0,6"/>
+                        <CheckBox x:Name="ShowWeeklyCheck" Content="Mostrar limite semanal" Checked="Details_OnChanged" Unchecked="Details_OnChanged"/>
+                        <CheckBox x:Name="ShowResetCheck" Content="Mostrar renovação" Checked="Details_OnChanged" Unchecked="Details_OnChanged"/>
+                        <CheckBox x:Name="CountdownCheck" Content="Exibir tempo restante" Checked="Details_OnChanged" Unchecked="Details_OnChanged"/>
+                        <Border Height="1" Background="#38383B" Margin="0,17,0,17"/>
+                        <TextBlock Text="Dimensões" Foreground="#F5F5F5" FontSize="17" FontWeight="SemiBold"/>
+                        <TextBlock Text="Ajuste o espaço que o card ocupa." Foreground="#A7A7AD" FontSize="12" Margin="0,4,0,14"/>
+                        <TextBlock x:Name="CardWidthLabel" Foreground="#DEDEE1" FontSize="12"/><Slider x:Name="CardWidthSlider" Minimum="220" Maximum="400" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="CardSize_OnChanged"/>
+                        <TextBlock x:Name="CardHeightLabel" Foreground="#DEDEE1" FontSize="12" Margin="0,12,0,0"/><Slider x:Name="CardHeightSlider" Minimum="140" Maximum="240" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="CardSize_OnChanged"/>
+                        <Border Height="1" Background="#38383B" Margin="0,23,0,21"/>
+                        <TextBlock Text="Cantos" Foreground="#F5F5F5" FontSize="17" FontWeight="SemiBold"/>
+                        <TextBlock Text="Escolha quais ficam arredondados." Foreground="#A7A7AD" FontSize="12" Margin="0,4,0,10"/>
+                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
+                            <CheckBox x:Name="TopLeftCheck" Content="Superior esquerdo" Checked="Corner_OnChanged" Unchecked="Corner_OnChanged"/>
+                            <CheckBox x:Name="TopRightCheck" Grid.Column="1" Content="Superior direito" Checked="Corner_OnChanged" Unchecked="Corner_OnChanged"/>
+                            <CheckBox x:Name="BottomLeftCheck" Grid.Row="1" Content="Inferior esquerdo" Checked="Corner_OnChanged" Unchecked="Corner_OnChanged"/>
+                            <CheckBox x:Name="BottomRightCheck" Grid.Row="1" Grid.Column="1" Content="Inferior direito" Checked="Corner_OnChanged" Unchecked="Corner_OnChanged"/>
+                        </Grid>
+                        <Border Height="1" Background="#38383B" Margin="0,21,0,21"/>
+                        <TextBlock Text="Borda" Foreground="#F5F5F5" FontSize="17" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="BorderSizeLabel" Foreground="#DEDEE1" FontSize="12" Margin="0,13,0,0"/><Slider x:Name="BorderSizeSlider" Minimum="0" Maximum="8" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="BorderSize_OnChanged" ToolTip="0 remove a borda"/>
+                        <TextBlock Text="Cor" Foreground="#DEDEE1" FontSize="12" Margin="0,14,0,6"/>
+                        <ComboBox x:Name="BorderColorCombo" SelectionChanged="BorderColor_OnChanged" ToolTip="Cor da borda">
+                            <ComboBoxItem Content="Preto original" Tag="theme"/><ComboBoxItem Content="Branco" Tag="#FFFFFF"/><ComboBoxItem Content="Cinza" Tag="#808080"/><ComboBoxItem Content="Preto" Tag="#111111"/><ComboBoxItem Content="Dourado" Tag="#D9AA50"/><ComboBoxItem Content="Roxo" Tag="#A87AE3"/><ComboBoxItem Content="Azul" Tag="#57BCE2"/><ComboBoxItem Content="Verde" Tag="#9BE84F"/><ComboBoxItem Content="Personalizada" Tag="custom"/>
+                        </ComboBox>
+                        <TextBox x:Name="BorderHexInput" Margin="0,8,0,0" MaxLength="7" TextChanged="BorderHex_OnChanged" ToolTip="Digite uma cor no formato #RRGGBB"/>
+                        <TextBlock x:Name="BorderHint" Foreground="#B0B0B5" FontSize="11" Text="Código #RRGGBB" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+            <Grid Grid.Row="2" Margin="30,0,30,25"><TextBlock Text="Salvo somente neste computador" Foreground="#99999F" FontSize="11" VerticalAlignment="Center"/><StackPanel Orientation="Horizontal" HorizontalAlignment="Right"><Button Content="Cancelar" Click="Cancel_OnClick" Style="{StaticResource ActionButton}" Margin="0,0,9,0"/><Button x:Name="SaveButton" Content="Salvar alterações" Click="Save_OnClick" Background="#F2F2F3" Foreground="#171719" FontWeight="SemiBold" Style="{StaticResource ActionButton}"/></StackPanel></Grid>
+        </Grid>
+    </Border>
+</Window>

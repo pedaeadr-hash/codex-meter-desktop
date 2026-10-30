@@ -1,6 +1,10 @@
 using System.Net.Http;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using System.IO;
 using CodexMeter.Core;
 using CodexMeter.Desktop.Services;
 using CodexMeter.Infrastructure;
@@ -20,6 +24,41 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+
+        var configPreviewPath = Environment.GetEnvironmentVariable("CODEX_METER_CONFIG_PREVIEW_PATH");
+        if (!string.IsNullOrWhiteSpace(configPreviewPath))
+        {
+            _usageProvider = new CodexAppServerClient();
+            var previewWindow = new MainWindow(_usageProvider);
+            MainWindow = previewWindow;
+            previewWindow.Show();
+            var config = new ConfigWindow(new AppearanceStore().Load(), _ => { }) { Owner = previewWindow };
+            config.SetPreviewSource(previewWindow);
+            config.Show();
+            await Dispatcher.InvokeAsync(() =>
+            {
+                config.UpdateLayout();
+                var dpi = VisualTreeHelper.GetDpi(config);
+                var bitmap = new RenderTargetBitmap((int)Math.Ceiling(config.ActualWidth * dpi.DpiScaleX), (int)Math.Ceiling(config.ActualHeight * dpi.DpiScaleY), 96 * dpi.DpiScaleX, 96 * dpi.DpiScaleY, PixelFormats.Pbgra32);
+                bitmap.Render(config);
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(configPreviewPath))!);
+                using var output = File.Create(configPreviewPath);
+                encoder.Save(output);
+                Shutdown();
+            }, DispatcherPriority.ApplicationIdle);
+            return;
+        }
+
+        // Preview runs are isolated from the active widget and its local controller.
+        if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CODEX_METER_PREVIEW_PATH")))
+        {
+            _usageProvider = new CodexAppServerClient();
+            MainWindow = new MainWindow(_usageProvider);
+            MainWindow.Show();
+            return;
+        }
 
         _instanceMutex = new Mutex(initiallyOwned: true, "Local\\CodexMeter.Desktop", out var createdNew);
         if (!createdNew)

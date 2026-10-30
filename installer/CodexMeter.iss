@@ -30,6 +30,7 @@ Name: "startup"; Description: "Iniciar o Codex Meter com o Windows"; GroupDescri
 [Files]
 Source: "..\artifacts\desktop\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\artifacts\cli\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\artifacts\cli\codex-meter.exe"; DestDir: "{app}"; DestName: "code-meter.exe"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\Codex Meter"; Filename: "{app}\{#MyAppExeName}"

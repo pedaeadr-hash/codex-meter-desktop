@@ -15,7 +15,7 @@ if (command == "minimizer")
     command = "minimize";
 }
 
-if (command is not ("open" or "off" or "minimize" or "status"))
+if (command is not ("open" or "config" or "off" or "minimize" or "status"))
 {
     Console.Error.WriteLine($"Comando desconhecido: {command}");
     PrintHelp();
@@ -28,7 +28,7 @@ using var client = new HttpClient
     Timeout = TimeSpan.FromSeconds(2)
 };
 
-if (command == "open" && !await IsRunningAsync(client))
+if (command is "open" or "config" && !await IsRunningAsync(client))
 {
     var desktopPath = FindDesktopExecutable();
     if (desktopPath is null)
@@ -58,6 +58,7 @@ try
     Console.WriteLine(command switch
     {
         "open" => "Codex Meter aberto.",
+        "config" => "Configuracoes abertas.",
         "off" => "Codex Meter encerrado.",
         _ => "Codex Meter ocultado."
     });
@@ -100,6 +101,7 @@ static void PrintHelp()
     Console.WriteLine();
     Console.WriteLine("Uso:");
     Console.WriteLine("  codex-meter open       Abre ou mostra o widget");
+    Console.WriteLine("  codex-meter config     Personaliza o visual do widget");
     Console.WriteLine("  codex-meter minimize   Oculta o widget");
     Console.WriteLine("  codex-meter minimizer  Alias de minimize");
     Console.WriteLine("  codex-meter off        Encerra o aplicativo");

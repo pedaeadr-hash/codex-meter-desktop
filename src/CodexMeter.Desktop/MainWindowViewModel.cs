@@ -17,6 +17,24 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged, IDisposable
     private string _weeklyText = "Semana · aguardando dados";
     private string _resetText = "Conectando ao Codex";
     private double _weeklyUsedPercent;
+    private double? _primaryRemainingPercent;
+    private DateTimeOffset? _resetAt;
+    private bool _showCountdown;
+    private string _countdownText = "Renovação indisponível";
+    public string CountdownText { get => _countdownText; private set => SetField(ref _countdownText, value); }
+    public string ResetDisplay => _showCountdown ? CountdownText : ResetText;
+
+    public void SetCountdown(bool enabled)
+    {
+        _showCountdown = enabled;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResetDisplay)));
+    }
+
+    public double? PrimaryRemainingPercent
+    {
+        get => _primaryRemainingPercent;
+        private set => SetField(ref _primaryRemainingPercent, value);
+    }
 
     public MainWindowViewModel(IUsageProvider usageProvider)
     {
@@ -53,7 +71,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged, IDisposable
     public string ResetText
     {
         get => _resetText;
-        private set => SetField(ref _resetText, value);
+        private set { SetField(ref _resetText, value); PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResetDisplay))); }
     }
 
     public double WeeklyUsedPercent
@@ -75,8 +93,11 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged, IDisposable
             var usage = await _usageProvider.GetUsageAsync();
             var primary = usage.Primary;
             var secondary = usage.Secondary;
+            _resetAt = primary?.ResetsAt;
+            UpdateCountdown();
 
             PrimaryRemainingText = primary is null ? "--%" : $"{primary.RemainingPercent:0}%";
+            PrimaryRemainingPercent = primary?.RemainingPercent;
             PrimaryCaption = primary is null
                 ? "JANELA DE 5 HORAS"
                 : $"LIVRE · {primary.Label.ToUpperInvariant()}";
@@ -88,22 +109,32 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged, IDisposable
                 : $"Semana · {secondary.RemainingPercent:0}% livre";
             WeeklyUsedPercent = secondary?.UsedPercent ?? 0;
             ResetText = primary?.ResetsAt is null
-                ? $"Atualizado {usage.UpdatedAt.ToLocalTime():HH:mm}"
+                ? "Renovação indisponível"
                 : FormatReset(primary.ResetsAt.Value);
         }
         catch
         {
             PrimaryRemainingText = "--%";
+            _resetAt = null;
+            UpdateCountdown();
+            PrimaryRemainingPercent = null;
             PrimaryCaption = "CODEX INDISPONIVEL";
             PlanText = "Codex Meter";
-            WeeklyText = "Nao foi possivel consultar os dados";
-            ResetText = "Clique no controle para tentar de novo";
+            WeeklyText = "Semana indisponível";
+            ResetText = "Tentando novamente";
             WeeklyUsedPercent = 0;
         }
         finally
         {
             _refreshing = false;
         }
+    }
+
+    private void UpdateCountdown()
+    {
+        var remaining = _resetAt - DateTimeOffset.Now;
+        CountdownText = remaining is null ? "Renovação indisponível" : remaining <= TimeSpan.Zero ? "Renovação em instantes" : $"Volta em {(int)remaining.Value.TotalHours}h {remaining.Value.Minutes:00}min";
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResetDisplay)));
     }
 
     private static string FormatReset(DateTimeOffset resetAt) =>

@@ -1,13 +1,14 @@
 <Window x:Class="CodexMeter.Desktop.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:CodexMeter.Desktop"
         Title="Codex Meter"
         Width="236"
         Height="148"
-        MinWidth="236"
-        MinHeight="148"
-        MaxWidth="236"
-        MaxHeight="148"
+        MinWidth="220"
+        MinHeight="140"
+        MaxWidth="400"
+        MaxHeight="240"
         WindowStyle="None"
         ResizeMode="NoResize"
         AllowsTransparency="True"
@@ -20,7 +21,7 @@
         MouseLeftButtonDown="Window_OnMouseLeftButtonDown"
         Loaded="Window_OnLoaded"
         Closing="Window_OnClosing">
-    <Border Background="#030303"
+    <Border x:Name="CardBorder" Background="#090909"
             BorderBrush="#0A0A0A"
             BorderThickness="5"
             CornerRadius="28"
@@ -28,6 +29,7 @@
         <Border.ContextMenu>
             <ContextMenu x:Name="WidgetMenu" Opened="WidgetMenu_OnOpened">
                 <MenuItem Header="Atualizar agora" Click="Refresh_OnClick" />
+                <MenuItem Header="Personalizar aparência" Click="Config_OnClick" />
                 <MenuItem Header="Iniciar com o Windows" x:Name="StartupMenuItem" IsCheckable="True" Click="Startup_OnClick" />
                 <Separator />
                 <MenuItem Header="Ocultar" Click="Hide_OnClick" />
@@ -37,18 +39,20 @@
 
         <Grid ClipToBounds="True">
             <Grid.RowDefinitions>
-                <RowDefinition Height="61" />
-                <RowDefinition Height="77" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0"
-                    Background="#565656"
-                    CornerRadius="22,22,18,18">
-                <Grid Margin="14,9,13,7">
+            <Border x:Name="CardHeader" Grid.Row="0"
+                    Background="#111111" Margin="8,8,8,0"
+                    CornerRadius="14">
+                <Grid Margin="14,7,14,7">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="52" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
+
+                    <Canvas x:Name="ThemeArt" Grid.ColumnSpan="2" IsHitTestVisible="False" Opacity="0.36" />
 
                     <Viewbox Grid.Column="0"
                              Width="32"
@@ -56,7 +60,7 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Center"
                              ToolTip="OpenAI Codex">
-                        <Path Fill="White"
+                        <Path x:Name="CodexLogo" Fill="White"
                               Stretch="Uniform"
                               Data="M11.248 18.25q-.825 0-1.568-.314a4.3 4.3 0 0 1-1.32-.874 4 4 0 0 1-1.304.214 4 4 0 0 1-2.046-.544 4.27 4.27 0 0 1-1.518-1.485 4 4 0 0 1-.56-2.095q0-.48.131-1.04A4.4 4.4 0 0 1 2.04 10.71a4.07 4.07 0 0 1 .017-3.4 4.2 4.2 0 0 1 1.056-1.418 3.8 3.8 0 0 1 1.6-.842 3.9 3.9 0 0 1 .76-1.683q.593-.759 1.451-1.188a4.04 4.04 0 0 1 1.832-.429q.825 0 1.567.313.742.314 1.32.875a4 4 0 0 1 1.304-.215q1.106 0 2.046.545a4.14 4.14 0 0 1 1.501 1.485q.578.941.578 2.095 0 .48-.132 1.04.66.61 1.023 1.419.363.792.363 1.666 0 .892-.38 1.717a4.3 4.3 0 0 1-1.072 1.435 3.8 3.8 0 0 1-1.584.825 3.8 3.8 0 0 1-.775 1.683 4.06 4.06 0 0 1-1.436 1.188 4.04 4.04 0 0 1-1.832.429m-4.076-2.062q.825 0 1.435-.347l3.103-1.782a.36.36 0 0 0 .164-.313v-1.42L7.881 14.62a.67.67 0 0 1-.726 0l-3.118-1.798a.5.5 0 0 1-.017.115v.198q0 .841.396 1.551.413.693 1.139 1.089a3.2 3.2 0 0 0 1.617.412m.165-2.69a.4.4 0 0 0 .181.05q.083 0 .165-.05l1.238-.71-3.977-2.31a.7.7 0 0 1-.363-.643v-3.58q-.825.362-1.32 1.122a2.9 2.9 0 0 0-.495 1.65q0 .809.413 1.55.412.743 1.072 1.123zm3.91 3.663q.875 0 1.585-.396a2.96 2.96 0 0 0 1.534-2.64v-3.564a.32.32 0 0 0-.165-.297l-1.254-.726v4.604a.7.7 0 0 1-.363.643l-3.119 1.799a3 3 0 0 0 1.783.577m.627-6.039V8.878L10.01 7.822 8.129 8.878v2.244l1.881 1.056zM7.057 5.859a.7.7 0 0 1 .363-.644l3.119-1.798a3 3 0 0 0-1.782-.578q-.874 0-1.584.396A2.96 2.96 0 0 0 6.05 4.324a3.07 3.07 0 0 0-.396 1.551v3.547q0 .199.165.314l1.237.726zm8.383 7.887q.825-.364 1.303-1.123.495-.758.495-1.65a3.15 3.15 0 0 0-.412-1.55q-.413-.743-1.073-1.123l-3.086-1.782q-.099-.065-.181-.049a.3.3 0 0 0-.165.05l-1.238.692 3.993 2.327a.6.6 0 0 1 .264.264.64.64 0 0 1 .1.363zm-3.317-8.382a.63.63 0 0 1 .726 0l3.135 1.831v-.297q0-.792-.396-1.501a2.86 2.86 0 0 0-1.105-1.155q-.71-.43-1.65-.43-.825 0-1.436.347L8.294 5.941a.36.36 0 0 0-.165.314v1.418z" />
                     </Viewbox>
@@ -77,7 +81,7 @@
                 </Grid>
             </Border>
 
-            <Grid Grid.Row="1" Margin="14,8,12,5">
+            <Grid x:Name="ClassicDetails" Grid.Row="1" Margin="19,7,17,5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -91,39 +95,48 @@
                 <TextBlock Grid.Row="0" Grid.Column="0"
                            Text="{Binding PlanText}"
                            Foreground="White"
-                           FontSize="14"
+                           FontSize="12"
                            FontWeight="SemiBold"
                            TextTrimming="CharacterEllipsis" />
-                <TextBlock Grid.Row="1" Grid.Column="0"
+                <TextBlock x:Name="ClassicWeekly" Grid.Row="1" Grid.Column="0"
                            Text="{Binding WeeklyText}"
                            Foreground="#B4B4B4"
-                           FontSize="11.5"
+                           FontSize="11"
                            Margin="0,2,0,0" />
-                <TextBlock Grid.Row="2" Grid.Column="0"
-                           Text="{Binding ResetText}"
+                <TextBlock x:Name="ClassicReset" Grid.Row="2" Grid.Column="0"
+                           Text="{Binding ResetDisplay}"
                            Foreground="#949494"
-                           FontSize="10.5"
+                           FontSize="10"
                            Margin="0,2,0,0" />
 
-                <Button Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
-                        Width="34" Height="20"
-                        Padding="0"
-                        Margin="8,5,0,0"
-                        VerticalAlignment="Center"
-                        Background="#6A6A6A"
-                        BorderThickness="0"
-                        Cursor="Hand"
-                        Click="Refresh_OnClick"
-                        ToolTip="Atualizar dados">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}" CornerRadius="10">
-                                <Ellipse Width="14" Height="14" Fill="White" HorizontalAlignment="Right" Margin="0,0,3,0" />
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
             </Grid>
+
+            <Grid x:Name="PosterLayout" Grid.RowSpan="2" Visibility="Collapsed" SizeChanged="PosterLayout_OnSizeChanged">
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1"><GradientStop Color="#454545" Offset="0"/><GradientStop Color="#161616" Offset="0.38"/><GradientStop Color="#050505" Offset="0.7"/></LinearGradientBrush>
+                </Grid.Background>
+                <Rectangle IsHitTestVisible="False" Opacity="0.18">
+                    <Rectangle.Fill><DrawingBrush TileMode="Tile" Viewport="0,0,15,15" ViewportUnits="Absolute" Viewbox="0,0,15,15" ViewboxUnits="Absolute"><DrawingBrush.Drawing><GeometryDrawing Brush="#A0A0A0"><GeometryDrawing.Geometry><EllipseGeometry Center="1,1" RadiusX="0.7" RadiusY="0.7"/></GeometryDrawing.Geometry></GeometryDrawing></DrawingBrush.Drawing></DrawingBrush></Rectangle.Fill>
+                </Rectangle>
+                <Grid Margin="15,10,15,10">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Grid><Viewbox Width="23" Height="23" HorizontalAlignment="Left"><Path Fill="White" Stretch="Uniform" Data="{Binding Data, ElementName=CodexLogo}"/></Viewbox>
+                        <Border Background="#38FFFFFF" CornerRadius="4" Padding="7,3" HorizontalAlignment="Right" VerticalAlignment="Center"><TextBlock Text="CODEX" Foreground="#F5F5F5" FontSize="9" FontWeight="SemiBold"/></Border>
+                    </Grid>
+                    <StackPanel Grid.Row="1" VerticalAlignment="Center" Margin="0,3,0,3">
+                        <TextBlock Text="{Binding PrimaryCaption}" Foreground="#C9C9C9" FontSize="9" FontWeight="SemiBold"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><TextBlock Text="{Binding PrimaryRemainingText}" Foreground="White" FontWeight="SemiBold" FontSize="25"/><TextBlock Text=" livre" Foreground="#CDCDCD" FontSize="11" VerticalAlignment="Center"/></StackPanel>
+                    </StackPanel>
+                    <Grid Grid.Row="2"><Grid.RowDefinitions><RowDefinition Height="1"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <Border Background="#6FFFFFFF"/><Grid Grid.Row="1" Margin="0,6,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="1.2*"/></Grid.ColumnDefinitions>
+                            <TextBlock x:Name="PosterWeekly" Text="{Binding WeeklyText}" Foreground="#F3F3F3" FontSize="10" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock x:Name="PosterReset" Grid.Column="1" Text="{Binding ResetDisplay}" Foreground="#C9C9C9" FontSize="9" Margin="8,0,0,0" TextAlignment="Right" TextTrimming="CharacterEllipsis"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <local:AppleCard x:Name="AppleLayout" Grid.RowSpan="2" Visibility="Collapsed" SizeChanged="PosterLayout_OnSizeChanged"/>
 
         </Grid>
     </Border>

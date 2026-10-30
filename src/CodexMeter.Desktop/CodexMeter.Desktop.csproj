@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\CodexMeter.Core\CodexMeter.Core.csproj" />
@@ -8,6 +8,7 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
+
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
